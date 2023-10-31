@@ -2,33 +2,46 @@ const { response } = require('express');
 const Cliente = require('../../models/clienteModel/clienteModel');
 
 const getClientes = async (req, res = response) =>{
-    const listClientes = await Cliente.findAll()
-
-    res.json({listClientes})
+    try{
+        const listClientes = await Cliente.findAll()
+        res.json({listClientes})
+    }catch(error){
+        console.log(error)
+        res.json({
+            msg:`Upps ocurrio un error`
+        })
+    }
+    
 }
 
 const getCliente = async (req, res = response) => {
-    const { id } = req.params
-    const cliente = await Cliente.findByPk(id)
+    try{
+        const { id } = req.params
+        const cliente = await Cliente.findByPk(id)
 
-    if(cliente){
-        res.json(cliente)
-    }else{
-        res.status(404).json({
-            msg: `No existe un cliente con el id ${id}`
+        if(cliente){
+            res.json(cliente)
+        }else{
+            res.json({
+                msg: `No existe un cliente con el id ${id}`
+            })
+        }
+    }catch(error){
+        console.log(error)
+        res.json({
+            msg:`Upps ocurrio un error`
         })
-    }
+    }    
 }
 
-const postCliente = async (req, res = response) => {
-    const { body } = req;
-
+const postCliente = async (req, res = response) => {    
     try{
+        const { body } = req;
         await Cliente.create(body)
 
         res.json({
             msg:`El cliente fue agregado con exito`
-    })
+        })
     }catch(error){
         console.log(error)
         res.json({
@@ -38,43 +51,52 @@ const postCliente = async (req, res = response) => {
 }
 
 
-const putCliente = async (req, res = response) => {
-    const {body} = req
-    const {id} = req.params
-
+const putCliente = async (req, res = response) => {    
     try{
+        const {body} = req
+        const {id} = req.params
         const cliente = await Cliente.findByPk(id);
 
-    if(cliente){
-        await cliente.update(body);
-        res.json({
-            msg:`El cliente fue actualizado con exito`
-        })
-    }else{
-        res.status(404).json({
-            msg: `No existe un cliente con el id ${id}`
-        })
-    }
+        if(cliente){
+            await cliente.update(body);
+            res.json({
+                msg:`El cliente fue actualizado con exito`
+            })
+        }else{
+            res.json({
+                msg: `No existe un cliente con el id ${id}`
+            })
+        }
     }catch(error){
-
+        console.log(error)
+        res.json({
+            msg:`Upps ocurrio un error`
+        })
     }
 }
 
 const deleteCliente = async (req, res = response) => {
-    const { id } = req.params
-    const cliente = await Cliente.findByPk(id)
+    try{
+        const { id } = req.params
+        const cliente = await Cliente.findByPk(id)
 
-    if(!cliente){
-        res.status(404).json({
-            msg: `No existe un cliente con el id ${id}`
-        })
-    }else{
-        await cliente.destroy();
+        if(!cliente){
+            res.json({
+                msg: `No existe un cliente con el id ${id}`
+            })
+        }else{
+            await cliente.destroy();
+            res.json({
+                msg:`El cliente fue eliminado con exito`
+            })
+
+        }
+    }catch(error){
+        console.log(error)
         res.json({
-            msg:`El cliente fue eliminado con exito`
+            msg:`Upps ocurrio un error`
         })
-
-    }
+    }    
 }
 
 module.exports = {

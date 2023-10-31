@@ -1,4 +1,5 @@
 const clienteRoutes = require('./clienteRoute/clienteRoute');
+const proveedorRoutes = require('./proveedorRoute/proveedorRoute')
 const pedidoRoutes = require('./pedidoRoutes/pedidoRoute')
 const referenciaPedidoRoutes = require('./pedidoRoutes/referenciaPedidoRoute')
 const procesoReferenciaPedidoRoutes = require('./pedidoRoutes/procesoReferenciaPedidoController')
@@ -7,11 +8,12 @@ const tallaColorProcesoReferenciaPedidoRoutes = require('./pedidoRoutes/tallaCol
 
 function configureRoutes(app, path) {
     app.use(path, clienteRoutes);
+    app.use(path,proveedorRoutes);
     app.use(path, pedidoRoutes);
     app.use(path, referenciaPedidoRoutes);
     app.use(path, procesoReferenciaPedidoRoutes);
     app.use(path, colorProcesoReferenciaPedidoRoutes);
-    app.use(path, tallaColorProcesoReferenciaPedidoRoutes);
+    app.use(path, tallaColorProcesoReferenciaPedidoRoutes);    
     }
 
 module.exports = configureRoutes;
