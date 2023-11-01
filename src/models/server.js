@@ -28,7 +28,7 @@ class Server{
     }
 
     routes(){
-        configureRoutes(this.app, this.path);
+        configureRoutes(this.app, this.path);  
     }
 }
 
