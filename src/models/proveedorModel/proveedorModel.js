@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../database/config');
 
-const ClienteModel = sequelize.define('Cliente', {
-  tipoCliente: {
+const ProveedorModel = sequelize.define('Proveedor', {
+  tipoProveedor: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
@@ -85,4 +85,4 @@ const ClienteModel = sequelize.define('Cliente', {
 });
 
 
-module.exports = ClienteModel;
+module.exports = ProveedorModel;
