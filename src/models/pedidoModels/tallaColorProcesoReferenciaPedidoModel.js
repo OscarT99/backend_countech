@@ -11,7 +11,7 @@ const TallaColorProcesoReferenciaPedidoModel = sequelize.define('TallaEnColorEnP
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      isIn: ['S', 'M', 'L', 'XL'],
+      isIn: [['S', 'M', 'L', 'XL']],
     },
   },
   cantidad: {

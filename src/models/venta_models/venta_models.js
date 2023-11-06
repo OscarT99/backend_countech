@@ -35,7 +35,7 @@ const Venta = sequelize.define('Venta', {
   observaciones: {
     type: DataTypes.STRING(300),
   },
-  estado: {
+  estadoPago: {
     type: DataTypes.STRING(20),
     allowNull: false,
     validate: {

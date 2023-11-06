@@ -15,7 +15,7 @@ const ProcesoReferenciaPedidoModel = sequelize.define('ProcesoEnReferenciaEnPedi
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      isIn: ['Fileteadora', 'Plana', 'Presilladora', 'Recubridora','Manual'],
+      isIn: [['Fileteadora', 'Plana', 'Presilladora', 'Recubridora','Manual']],
     },
   },
   cantidadTotal: {

@@ -41,6 +41,14 @@ const PedidoModel = sequelize.define('Pedido', {
       min: 0,
     },
   },
+  estadoPago: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    defaultValue: 'Pendiente',
+    validate: {
+      isIn: [['Pago', 'Pendiente']],
+    },
+  },
   observaciones: {
     type: DataTypes.STRING,
   },

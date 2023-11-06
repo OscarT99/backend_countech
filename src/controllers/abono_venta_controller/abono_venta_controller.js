@@ -1,5 +1,7 @@
 const { response } = require('express');
 const AbonoVenta = require('../../models/abono_venta_models/abono_venta_models');
+const Pedido = require('../../models/pedidoModels/pedidoModel');
+
 
 
 
@@ -10,7 +12,7 @@ const getAbonoVentas = async (req, res = response) => {
     } catch (err) {
         console.log(err)
         res.json({
-            msg: `Error en la lista de ventas`
+            msg: `Error en la lista de abonos a ventas`
         })
     }
 
@@ -24,92 +26,86 @@ const getAbonoVenta = async (req, res = response) => {
         res.json(venta)
     } else {
         res.status(404).json({
-            msg: `No existe una venta con el id ${id}`
+            msg: `No existe un abono con el id ${id}`
         })
     }
 }
-/*
-const postAbonoAbonoVenta = async (req, res = response) => {
-    const { body } = req;
 
-    try {
-        await AbonoAbonoVenta.create(body)
-
-        res.json({
-            msg: `El abono fue agregado con éxito`
-        })
-    } catch (error) {
-        console.log(error)
-        res.json({
-            msg: `Upps ocurrio un error`
-        })
-    }
-}
-*/
 
 const postAbonoVenta = async (req, res) => {
     const { body } = req;
-  
-    try {
-      // Crea el abono y asocia automáticamente la venta a través de la clave foránea
-      const nuevoAbono = await AbonoVenta.create(body);
-  
-      res.json({
-        msg: `El abono fue agregado con éxito`,
-        abono: nuevoAbono, // Opcional: Devuelve los datos del abono creado
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        msg: `Upps, ocurrió un error al agregar el abono.`,
-      });
-    }
-  };
-  
-const putAbonoVenta = async (req, res = response) => {
-    const { body } = req
-    const { id } = req.params
 
     try {
-        const venta = await AbonoVenta.findByPk(id);
+        // Busca la venta asociada al abono
+        const venta = await Pedido.findByPk(body.venta);
 
         if (venta) {
-            await venta.update(body);
-            res.json({
-                msg: `La venta fue actualizada con éxito`
+            // Verifica las condiciones antes de crear el abono
+            if (venta.formaPago === 'Credito' && venta.estado === 'Terminado' && body.estadoPago === 'Pendiente') {
+                // Crea el abono y asocia automáticamente la venta a través de la clave foránea
+                const nuevoAbono = await AbonoVenta.create(body);
 
-            })
+                res.json({
+                    msg: `El abono fue agregado con éxito`,
+                });
+            } else {
+                res.status(400).json({
+                    msg: `No es posible realizar un abono para esta venta, no cumple con las condiciones necesarias.`
+                });
+            }
         } else {
             res.status(404).json({
-                msg: `No existe una venta con el id ${id}`
-            })
+                msg: `La venta asociada no existe.`
+            });
         }
     } catch (error) {
-
+        console.error(error);
+        res.status(500).json({
+            msg: `Upps, ocurrió un error al agregar el abono.`
+        });
     }
-}
+};
 
-const deleteAbonoVenta = async (req, res = response) => {
-    const { id } = req.params
-    const venta = await AbonoVenta.findByPk(id)
 
-    if (!venta) {
-        res.status(404).json({
-            msg: `No existe una venta con el id ${id}`
-        })
-    } else {
-        await venta.destroy();
-        res.json({
-            msg: `La venta fue eliminada con éxito`
-        })
 
+//Solo modificar el campo estado
+const putAbonoVenta = async (req, res = response) => {
+    const { body } = req;
+    const { id } = req.params;
+
+    try {
+        const abonoVenta = await AbonoVenta.findByPk(id);
+
+        if (abonoVenta) {
+            if (body.estado !== undefined) {
+                await abonoVenta.update({
+                    estado: body.estado
+                });
+                res.json({
+                    msg: `El abono de venta fue actualizado con éxito`
+                });
+            } else {
+                res.status(400).json({
+                    msg: `El campo 'estado' es el único campo que se puede actualizar.`
+                });
+            }
+        } else {
+            res.status(404).json({
+                msg: `No existe un abono de venta con el id ${id}`
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: `Upps ocurrió un error`
+        });
     }
-}
+};
+
 
 module.exports = {
     getAbonoVentas,
     getAbonoVenta,
     postAbonoVenta,
-    deleteAbonoVenta,
     putAbonoVenta
 }
