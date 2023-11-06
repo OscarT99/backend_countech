@@ -27,9 +27,9 @@ DetallePedido.belongsTo(Pedido, {
   foreignKey: "fkPedido",
 });
 
-// DetallePedido.belongsTo(ReferenciaPedido, {
-//   foreignKey: "fkReferenciaPedido",
-// });
+DetallePedido.belongsTo(ReferenciaPedido, {
+  foreignKey: "fkReferenciaPedido",
+});
 
 
 module.exports = DetallePedido;

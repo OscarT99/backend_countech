@@ -26,7 +26,7 @@ const ReporteProduccion = sequelize.define("reporteProduccion", {
   },
 });
 
-AsignarProcedimiento.belongsTo(AsignarProcedimiento, {
+ReporteProduccion.belongsTo(AsignarProcedimiento, {
   foreignKey: "fkAsignarProcedimiento",
 });
 
