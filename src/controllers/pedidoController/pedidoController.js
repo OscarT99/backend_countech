@@ -1,5 +1,5 @@
 const {response} = require('express')
-const Pedido = require('../../models/pedidoModels/pedidoModel')
+const Pedido = require('../../models/pedidoModel/pedido')
 
 const getPedidos = async(req, res = response) => { 
     try{
@@ -9,7 +9,7 @@ const getPedidos = async(req, res = response) => {
         console.log(error)
         console.log(error)
         res.json({
-            msg:`Upps ocurrio un error`
+            msg:`¡Uy! Ha ocurrido un error`
         })
     }       
 }
@@ -23,13 +23,13 @@ const getPedido =async(req, res = response)=>{
             res.json(pedido)
         }else{
             res.json({
-                msg:`No existe una talla con el id ${id}`
+                msg:`No existe un pedido con el id ${id}`
             })
         }
     }catch(error){
         console.log(error)
         res.json({
-            msg:`Upps ocurrio un error`
+            msg:`¡Uy! Ha ocurrido un error`
         })
     }    
 }
@@ -44,7 +44,7 @@ const postPedido = async (req, res = response) => {
     }catch(error){
         console.log(error)
         res.json({
-            msg:`Upps ocurrio un error`
+            msg:`¡Uy! Ha ocurrido un error`
         })
     }
 }
@@ -68,7 +68,7 @@ const putPedido = async (req, res = response)=>{
     }catch(error){
         console.log(error)
         res.json({
-            msg:`Upps ocurrio un error`
+            msg:`¡Uy! Ha ocurrido un error`
         })
     }
 }
@@ -92,7 +92,7 @@ const deletePedido = async(req,res =response) => {
     }catch(error){
         console.log(error)
         res.json({
-            msg:`Upps ocurrio un error`
+            msg:`¡Uy! Ha ocurrido un error`
         })
     }    
 }

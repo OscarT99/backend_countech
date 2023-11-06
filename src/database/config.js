@@ -5,7 +5,7 @@ const sequelize = new Sequelize({
     host:'localhost',
     username:'root',
     password:'password',
-    database:'project_db_v1'
+    database:'db_coutench_v1'
 })
 
 sequelize
