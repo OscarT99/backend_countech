@@ -16,9 +16,9 @@ const ClienteModel = sequelize.define('Cliente', {
       isIn: [[
         'Registro civil',
         'Tarjeta de identidad',
-        'Cedula de ciudadania',
-        'Tarjeta de extranjero',
-        'Cedula de extranjero',
+        'Cédula de ciudadanía',
+        'Tarjeta de extranjería',
+        'Cédula de extranjería',
         'NIT',
         'Pasaporte',
       ]],
@@ -29,28 +29,36 @@ const ClienteModel = sequelize.define('Cliente', {
     allowNull: false,
     unique: true,
     validate: {
-      is: /^\d+$/,
+      customValidation(value) {
+        if (this.tipoIdentificacion === 'NIT') {
+          if (!/^\d{9}-\d$/.test(value)) {
+            throw new Error('Número de identificación no válido para NIT. Debe tener el formato "123456789-0".');
+          }
+        } else if (!/^\d{6,12}$/.test(value)) {
+          throw new Error('Número de identificación no válido. Debe tener entre 6 y 12 caracteres numéricos.');
+        }
+      },
     },
   },
   razonSocial: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      is: /^[A-Za-z ]+/,
+      is: /^[A-Za-záéíóúüÜÁÉÍÓÑñ. ]+/,
     },
   },
   nombreComercial: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      is: /^[A-Za-z ]+/,
+      is: /^[A-Za-záéíóúüÜÁÉÍÓÑñ. ]+/,
     },
   },
   ciudad: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      is: /^[A-Za-z]+/,
+      is: /^[A-Za-záéíóúüÜÁÉÍÓÑñ. ]+/,
     },
   },
   direccion: {
@@ -60,14 +68,14 @@ const ClienteModel = sequelize.define('Cliente', {
   contacto: {
     type: DataTypes.STRING,
     validate: {
-      is: /^[A-Za-z ]+/,
+      is: /^[A-Za-záéíóúüÜÁÉÍÓÑñ. ]+/,
     },
   },
   telefono: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      is: /^\(\+57\)\d{3}-\d{3}-\d{2}-\d{2}$/,
+      is: /^\d{10}$/,
     },
   },
   correo: {
@@ -75,7 +83,7 @@ const ClienteModel = sequelize.define('Cliente', {
     allowNull: false,
     unique: true,
     validate: {
-      is: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3,}$/,
+      isEmail: true,
     },
   },
   estado: {
@@ -83,6 +91,5 @@ const ClienteModel = sequelize.define('Cliente', {
     defaultValue: true,
   },
 });
-
 
 module.exports = ClienteModel;

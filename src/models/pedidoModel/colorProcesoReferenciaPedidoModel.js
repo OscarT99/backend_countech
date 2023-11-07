@@ -11,7 +11,7 @@ const ColorProcesoReferenciaPedidoModel = sequelize.define('ColorEnProcesoEnRefe
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      is: /^[a-zA-Z]+/,
+        is: /^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$/,
     },
   },
   cantidad: {

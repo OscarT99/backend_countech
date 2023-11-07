@@ -12,21 +12,18 @@ const ReferenciaPedidoModel = sequelize.define('ReferenciaEnPedido', {
     allowNull: false,
     unique: true,
     validate: {
-      is: /^[a-zA-Z0-9]+/,
+      is: /^[0-9]+/,
     },
   },
   descripcion: {
     type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      is: /^[a-zA-Z0-9]+/,
-    },
+    allowNull: false,    
   },
   valorUnitario: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
     validate: {
-      min: 0,
+      min: 1,
     },
   },
   cantidadTotal: {
