@@ -40,7 +40,7 @@ const getVenta = async (req, res = response) => {
     }
 }
 
-/*
+
 const putVenta = async (req, res = response) => {
     const { body } = req;
     const { id } = req.params;
@@ -73,29 +73,7 @@ const putVenta = async (req, res = response) => {
         });
     }
 };
-*/ 
-const putVenta = async (req, res = response) => {
-    const { body } = req
-    const { id } = req.params
 
-    try {
-        const venta = await Pedido.findByPk(id);
-
-        if (venta) {
-            await venta.update(body);
-            res.json({
-                msg: `La venta fue actualizada con éxito`
-
-            })
-        } else {
-            res.status(404).json({
-                msg: `No existe una venta con el id ${id}`
-            })
-        }
-    } catch (error) {
-
-    }
-}
 
 
 

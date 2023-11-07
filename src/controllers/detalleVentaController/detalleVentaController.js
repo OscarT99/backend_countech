@@ -69,40 +69,63 @@ const getDetallesVentas = async (req, res = response) => {
 
 
 const getDetalleVenta = async (req, res = response) => {
-    const { id } = req.params;
-  
-    try {
-      const detalleVenta = await DetalleVenta.findByPk(id, {
-        include: [
-          { model: Pedido },
-          { model: ReferenciaPedido },
-          { model: ProcesoReferenciaPedido },
-          { model: ColorProcesoReferenciaPedido },
-          { model: TallaColorProcesoReferenciaPedido }
-        ]
+  const { pedidoId } = req.params; // Cambia req.params.id a req.params.pedidoId
+
+  try {
+      const detallesVenta = await DetalleVenta.findAll({
+          where: {
+              pedido: pedidoId, // Buscar detalles de venta relacionados con el pedido
+          },
+          include: [
+              {
+                  model: Pedido,
+                  where: {
+                      estado: 'Terminado',
+                      id: pedidoId, // Filtro por ID de pedido
+                  },
+                  include: [
+                      {
+                          model: ReferenciaPedido,
+                          include: [
+                              {
+                                  model: ProcesoReferenciaPedido,
+                                  include: [
+                                      {
+                                          model: ColorProcesoReferenciaPedido,
+                                          include: [
+                                              {
+                                                  model: TallaColorProcesoReferenciaPedido
+                                              }
+                                          ]
+                                      }
+                                  ]
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ]
       });
-  
-      if (detalleVenta) {
-        res.json({ detalleVenta });
+
+      if (detallesVenta.length === 0) {
+          res.status(404).json({
+              msg: `No existen detalles de venta para el pedido con ID ${pedidoId} en estado 'Terminado'`
+          });
       } else {
-        res.status(404).json({
-          msg: `No existe un detalle de venta con el ID ${id}`
-        });
+          res.json(detallesVenta);
       }
-    } catch (error) {
+  } catch (error) {
       console.log(error);
       res.status(500).json({
-        msg: 'Ocurrió un error al obtener el detalle de venta'
+          msg: 'Ocurrió un error al obtener los detalles de venta'
       });
-    }
-  };
-  
-  module.exports = {
-    getDetalleVenta
-  };
-  
+  }
+}
 
-
+module.exports = {
+  getDetalleVenta,
+  getDetallesVentas,
+}
 
 
 

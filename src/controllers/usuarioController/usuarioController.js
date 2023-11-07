@@ -113,32 +113,6 @@ const putUsuario = async (req, res = response) => {
 
 
 
-/*
-const putUsuario = async (req, res = response) => {    
-    try{
-        const {body} = req
-        const {id} = req.params
-        const usuario = await Usuario.findByPk(id);
-
-        if(usuario){
-            await usuario.update(body);
-            res.json({
-                msg:`El usuario fue actualizado exitosamente`
-            })
-        }else{
-            res.json({
-                msg: `No existe un usuario con el id ${id}`
-            })
-        }
-    }catch(error){
-        console.log(error)
-        res.json({
-            msg:`Upps ocurrio un error`
-        })
-    }
-}
-*/
-
 
 module.exports = {
     getUsuarios,
